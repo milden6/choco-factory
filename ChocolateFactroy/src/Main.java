@@ -7,7 +7,6 @@ public class Main {
 
     public static void main(String[] args) throws SQLException {
         DBConnection.create_connection();
-
         login_form loginForm = new login_form();
     }
 }

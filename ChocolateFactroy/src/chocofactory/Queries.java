@@ -1,5 +1,6 @@
 package chocofactory;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,29 +13,28 @@ public class Queries {
     Statement statement;
     ResultSet resultSet;
 
-    User user;
+    public User getUser(String username, String password) {
 
-    ArrayList<User> users;
+        User user = null;
 
-    public ArrayList<User> readUsers(String sqlQuery) throws SQLException {
-
-        users = new ArrayList<>();
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(sqlQuery);
+
+            resultSet = statement.executeQuery("SELECT * FROM users " +
+                    "WHERE username = '" + username + "'" +
+                    "AND password = '" + password +  "'");
 
             while (resultSet.next()){
                 user = new User(resultSet.getString("user_id"),
-                        resultSet.getString("username"),
-                        resultSet.getString("password"),
-                        resultSet.getString("created_on"));
-                users.add(user);
+                                resultSet.getString("username"),
+                                resultSet.getString("password"),
+                                resultSet.getString("created_on"));
             }
         }
         catch (SQLException sqlException){
             System.out.println(sqlException);
         }
 
-        return users;
+        return user;
     }
 }

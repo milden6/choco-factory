@@ -1,17 +1,16 @@
 package gui;
 
 import chocofactory.Queries;
+import chocofactory.Session;
 import chocofactory.User;
 
 import javax.swing.*;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class login_form extends JFrame{
     private JTextField user_name;
-    private JTextField password;
+    private JPasswordField password;
     private JButton ConfirmButton;
     private JPanel root_panel;
 
@@ -26,28 +25,24 @@ public class login_form extends JFrame{
 
         ConfirmButton.addActionListener(actionEvent -> {
 
-            if (user_name.getText().equals("") || password.getText().equals("")){
+            if (user_name.getText().equals("") || password.equals("")){
                 showMessageDialog(null, "Заполните поля");
             }
             else{
 
-            ArrayList<User> users = new ArrayList<>();
-
             Queries queries = new Queries();
-            try {
-                users = queries.readUsers("SELECT * FROM users " +
-                        "WHERE username = '" + user_name.getText() + "'" +
-                        "AND password = '" + password.getText() +  "'");
-            } catch (SQLException sqlException) {
-                sqlException.printStackTrace();
-            }
+            User user = null;
 
-            if (users.size() != 1){
+            user = queries.getUser(user_name.getText(), String.valueOf(password.getPassword()));
+
+            if (user == null){
                 showMessageDialog(null, "Ошибка авторизации");
             }
             else {
+                Session.currentUserId = Integer.parseInt(user.userId);
+                Session.currentUser = user.userName;
                 dispose();
-                //login_form login_form = new login_form();
+                home_form homeForm = new home_form();
             }
             }
         });

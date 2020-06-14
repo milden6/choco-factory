@@ -1,8 +1,10 @@
 package gui;
 
+import chocofactory.Session;
+
 import javax.swing.*;
 
-public class home_form {
+public class home_form extends JFrame{
     private JTabbedPane tabbedPane1;
     private JTextField start_period;
     private JTextField parties_count;
@@ -27,4 +29,16 @@ public class home_form {
     private JTextField textField5;
     private JTextField textField6;
     private JButton button2;
+    private JPanel root_panel;
+
+    public home_form() {
+        setContentPane(root_panel);
+        pack();
+        setLocationRelativeTo(null);
+        setSize(1000, 500);
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        current_user.setText(Session.currentUser);
+    }
 }
