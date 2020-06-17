@@ -1,6 +1,5 @@
 package chocofactory;
 
-import javax.swing.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,5 +35,31 @@ public class Queries {
         }
 
         return user;
+    }
+
+    public ArrayList<ProducedChoco> getProducedChoco(){
+
+        ArrayList<ProducedChoco> producedChocos = new ArrayList<>();
+        ProducedChoco producedChoco;
+
+        try {
+            statement = connection.createStatement();
+
+            resultSet = statement.executeQuery("SELECT * FROM produced_choco");
+
+            while (resultSet.next()){
+                producedChoco = new ProducedChoco(resultSet.getString("id"),
+                                                  resultSet.getString("date"),
+                                                  resultSet.getString("choco_name"),
+                                                  Integer.parseInt(resultSet.getString("count")));
+
+                producedChocos.add(producedChoco);
+            }
+        }
+        catch (SQLException sqlException){
+            System.out.println(sqlException);
+        }
+
+        return producedChocos;
     }
 }
